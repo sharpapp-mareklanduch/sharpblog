@@ -1,0 +1,34 @@
+﻿@model SharpBlog.Core.Models.Comment
+
+<div class="container">
+    <div class="row">
+        <div class="offset-2 col-8">
+            <div class="comment">
+                <p>@Model.Content</p>
+                <p class="signature">
+                    Commented by
+                    @if (string.IsNullOrEmpty(Model.Email))
+                    {
+                        @Model.Author
+                    }
+                    else
+                    {
+                        <a href="mailto:@Model.Email">@Model.Author</a>
+                    }
+                    on @Model.InputDate
+                </p>
+
+                @if (Context.User.Identity.IsAuthenticated)
+                {
+                    <p>
+                        <form asp-controller="Blog" asp-action="DeleteComment" method="post">
+                            <input value="@Model.Id" name="postId" type="hidden" />
+                            <input value="@Model.Id" name="id" type="hidden" />
+                            <button type="submit">Delete comment</button>
+                        </form>
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

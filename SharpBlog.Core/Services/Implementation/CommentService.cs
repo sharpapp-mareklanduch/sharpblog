@@ -1,0 +1,46 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using SharpBlog.Core.Mappers;
+using SharpBlog.Database;
+using SharpBlog.Core.Models;
+
+namespace SharpBlog.Core.Services.Implementation
+{
+	public class CommentService : ICommentService
+	{
+		private readonly BlogContext _dbContext;
+
+		public CommentService(BlogContext dbContext)
+		{
+			_dbContext = dbContext;
+		}
+
+		public async Task<Comment> Add(Comment comment)
+		{
+			var entity = _dbContext.Comments.Add(new Database.Models.Comment
+			{
+				PostId = comment.PostId,
+				Author = comment.Author,
+				Email = comment.Email,
+				Content = comment.Content,
+				InputDate = DateTime.UtcNow
+			}).Entity;
+
+			await _dbContext.SaveChangesAsync();
+
+			return entity.EntityToDto();
+		}
+
+		public async Task Delete(int id)
+		{
+			var entity = await _dbContext.Comments.FirstOrDefaultAsync(c => c.Id == id);
+			if (entity != null)
+            {
+                entity.IsDeleted = true;
+                _dbContext.Update(entity);
+                await _dbContext.SaveChangesAsync();
+			}
+		}
+	}
+}

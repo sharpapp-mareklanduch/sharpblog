@@ -1,0 +1,9 @@
+﻿@model SharpBlog.Client.ViewModels.PostViewModel
+
+@await Html.PartialAsync("~/Views/Blog/Comment/_CommentForm.cshtml", Model.CommentFormViewModel)
+
+@foreach (var comment in Model.Post.Comments.OrderByDescending(c=>c.InputDate))
+{
+    @await Html.PartialAsync("~/Views/Blog/Comment/_Comment.cshtml", comment)
+}
+

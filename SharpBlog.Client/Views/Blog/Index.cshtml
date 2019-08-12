@@ -1,0 +1,7 @@
+﻿@model SharpBlog.Client.ViewModels.PostViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@await Html.PartialAsync("~/Views/Blog/_Post.cshtml", Model.Post)
+@await Html.PartialAsync("~/Views/Blog/Comment/_CommentList.cshtml", Model)

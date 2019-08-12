@@ -1,0 +1,36 @@
+﻿@model SharpBlog.Core.Models.Post
+
+<div class="container">
+    <div class="row">
+        <div class="offset-2 col-8">
+            <div class="post">
+                <h1>
+                    <a href="/Blog/@Model.Id">@Model.Title</a>
+                </h1>
+                @if (!Model.IsPublished)
+                {
+                    <p class="text-danger">Not published. Edit to publish.</p>
+                }
+                <p class="text-justify content">
+                    @Html.Raw(Model.Content)
+                </p>
+                <p class="publish-info">
+                    Published by @Model.Author on @Model.PublicationDate
+                    <span class="float-right"><a href="/Blog/@Model.Id/">@Model.Comments.Count comments</a></span>
+                    <br />
+                    @foreach (var category in Model.Categories)
+                    {
+                        Html.DisplayText($"{category.Name} ");
+                    }
+                </p>
+            </div>
+            @if (Context.User.Identity.IsAuthenticated)
+            {
+                <div>
+                    <a href="/Blog/EditPost/@Model.Id">Edit post</a>
+                </div>
+            }
+            <hr class="post-separator" />
+        </div>
+    </div>
+</div>

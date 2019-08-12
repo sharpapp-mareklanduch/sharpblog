@@ -1,0 +1,27 @@
+﻿<nav class="navbar navbar-expand navbar-custom">
+    <div class="container">
+        <div class="offset-2 col-8">
+            <div class="navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    @if (Context.User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Blog/EditPost">New post</a>
+                        </li>
+                    }
+                </ul>
+                @if (Context.User.Identity.IsAuthenticated)
+                {
+                    <a class="float-right" href="/Account/Logout">Logout</a>
+                }
+                else
+                {
+                    <a class="float-right" href="/Account/Login">Login</a>
+                }
+            </div>
+        </div>
+    </div>
+</nav>

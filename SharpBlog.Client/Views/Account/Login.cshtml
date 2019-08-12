@@ -1,0 +1,44 @@
+﻿@model SharpBlog.Client.ViewModels.Account.LoginViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_CleanLayout";
+}
+
+<body class="text-center">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+            <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 col-lg-8 mx-auto">
+                                <h3 class="login-heading mb-4">Login!</h3>
+                                <form asp-controller="Account" asp-action="Login" method="post">
+                                    <div class="form-label-group">
+                                        <input asp-for="Email" class="form-control" id="inputEmail" placeholder="Email address" autofocus>
+                                        <label for="inputEmail">Email address</label>
+                                    </div>
+
+                                    <div class="form-label-group">
+                                        <input asp-for="Password" id="inputPassword" class="form-control" placeholder="Password">
+                                        <label for="inputPassword">Password</label>
+                                    </div>
+
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                    <div class="custom-control custom-checkbox mb-3">
+                                        <input asp-for="RememberMe" class="custom-control-input" id="rememberMe" />
+                                        <label class="custom-control-label" for="rememberMe">Remember password</label>
+                                    </div>
+                                    <button class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Sign in</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
