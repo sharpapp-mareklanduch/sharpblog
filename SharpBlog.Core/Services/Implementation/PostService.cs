@@ -42,7 +42,8 @@ namespace SharpBlog.Core.Services.Implementation
                 .Include(p => p.Comments)
 				.Include(p => p.PostCategory)
 					.ThenInclude(p => p.Category)
-				.OrderByDescending(p => p.PublicationDate)
+				.OrderByDescending(p => p.InputDate)
+				.ThenByDescending(p => p.PublicationDate)
 				.Select(p => p.ToDto())
 				.ToList();
 
@@ -128,6 +129,11 @@ namespace SharpBlog.Core.Services.Implementation
 
 		private IEnumerable<PostCategory> GetPostCategoryEntities(PostDto post)
 		{
+			if(post?.Categories == null)
+			{
+				return new List<PostCategory>();
+			}
+
 			var allCategories = _dbContext.Categories.ToList();
 			var categories = post.Categories.Select(c => new Category { Name = c.Name });
 

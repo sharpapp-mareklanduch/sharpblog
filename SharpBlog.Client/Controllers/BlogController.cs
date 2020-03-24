@@ -66,7 +66,7 @@ namespace SharpBlog.Client.Controllers
 				Title = post.Title,
 				Content = post.Content,
 				IsPublished = post.IsPublished,
-				Categories = post.Categories.Split(" ").Select(t => new CategoryDto { Name = t })
+				Categories = post.Categories?.Split(" ").Select(t => new CategoryDto { Name = t })
 			});
 
 			return RedirectToAction(nameof(Index), new { id = addedPost.Id });
