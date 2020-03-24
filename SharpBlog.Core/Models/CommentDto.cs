@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SharpBlog.Core.Models
 {
-    public class Comment
+    public class CommentDto
     {
         public int Id { get; set; }
 

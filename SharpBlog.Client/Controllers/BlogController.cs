@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharpBlog.Client.ViewModels;
@@ -35,13 +36,14 @@ namespace SharpBlog.Client.Controllers
 		        return View(new PostFormViewModel());
 	        }
 
-	        var post = await _postService.Get((int)id);
+			var post = await _postService.Get((int)id);
 	        var editPost = new PostFormViewModel
 			{
 				Id = post.Id,
 				Title = post.Title,
 				Content = post.Content,
-				IsPublished = post.IsPublished
+				IsPublished = post.IsPublished,
+				Categories = string.Join(" ", post.Categories.Select(t => t.Name))
 			};
 
 	        return View(editPost);
@@ -57,13 +59,14 @@ namespace SharpBlog.Client.Controllers
 				return View(post);
 			}
 
-			var addedPost = await _postService.AddOrUpdate(new Post
+			var addedPost = await _postService.AddOrUpdate(new PostDto
 			{
 				Id = post.Id,
 				Author = User.Identity.Name,
 				Title = post.Title,
 				Content = post.Content,
-				IsPublished = post.IsPublished
+				IsPublished = post.IsPublished,
+				Categories = post.Categories.Split(" ").Select(t => new CategoryDto { Name = t })
 			});
 
 			return RedirectToAction(nameof(Index), new { id = addedPost.Id });
@@ -88,7 +91,7 @@ namespace SharpBlog.Client.Controllers
                 return View("Index", new PostViewModel(post, comment));
             }
 
-            await _commentService.Add(new Comment
+            await _commentService.Add(new CommentDto
             {
                 PostId = comment.PostId,
                 Author = comment.Name,

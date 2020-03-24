@@ -2,23 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using SharpBlog.Core.Mappers;
 using SharpBlog.Core.Models;
 using SharpBlog.Database;
+using SharpBlog.Database.Comparers;
+using SharpBlog.Database.Models;
 
 namespace SharpBlog.Core.Services.Implementation
 {
 	public class PostService : IPostService
 	{
 		private readonly BlogContext _dbContext;
+		private readonly IHttpContextAccessor _contextAccessor;
 
-		public PostService(BlogContext dbContext)
-		{
+		public PostService(
+			BlogContext dbContext,
+			IHttpContextAccessor contextAccessor)
+		{ 
 			_dbContext = dbContext;
+			_contextAccessor = contextAccessor;
 		}
 
-		public async Task<Post> AddOrUpdate(Post post)
+		public async Task<PostDto> AddOrUpdate(PostDto post)
 		{
 			if (post.Id == 0)
 			{
@@ -28,37 +35,30 @@ namespace SharpBlog.Core.Services.Implementation
 			return await Update(post);
 		}
 
-		public Task<List<Post>> GetAllPublished()
+		public Task<List<PostDto>> GetAll()
 		{
 			var posts = _dbContext.Posts
-                .Where(p => p.IsPublished && !p.IsDeleted)
+                .Where(p => (p.IsPublished || IsAdmin()) && !p.IsDeleted)
                 .Include(p => p.Comments)
+				.Include(p => p.PostCategory)
+					.ThenInclude(p => p.Category)
 				.OrderByDescending(p => p.PublicationDate)
-				.Select(p => p.EntityToDto())
+				.Select(p => p.ToDto())
 				.ToList();
 
 			return Task.FromResult(posts);
 		}
 
-		public Task<List<Post>> GetAll()
-		{
-			var posts = _dbContext.Posts
-                .Where(p => !p.IsDeleted)
-                .Include(p => p.Comments)
-				.OrderByDescending(p => p.PublicationDate)
-				.Select(p => p.EntityToDto())
-				.ToList();
-
-			return Task.FromResult(posts);
-		}
-
-		public async Task<Post> Get(int id)
+		public async Task<PostDto> Get(int id)
 		{
 			var entity = await _dbContext.Posts
-                .Where(p => !p.IsDeleted)
+                .Where(p => (p.IsPublished || IsAdmin()) && !p.IsDeleted)
                 .Include(p => p.Comments)
-                .FirstOrDefaultAsync(p => p.Id == id);
-			return entity.EntityToDto();
+				.Include(p => p.PostCategory)
+					.ThenInclude(p => p.Category)
+				.FirstOrDefaultAsync(p => p.Id == id);
+
+			return entity?.ToDto();
 		}
 
 		public async Task Delete(int id)
@@ -72,10 +72,11 @@ namespace SharpBlog.Core.Services.Implementation
 			}
 		}
 
-		private async Task<Post> Add(Post post)
+		private async Task<PostDto> Add(PostDto post)
 		{
 			var dateTimeNow = DateTime.UtcNow;
-			var postEntity = new Database.Models.Post
+			var postCategories = GetPostCategoryEntities(post);
+			var postEntity = new Post
 			{
 				Id = post.Id,
 				Author = post.Author,
@@ -84,6 +85,7 @@ namespace SharpBlog.Core.Services.Implementation
 				InputDate = dateTimeNow,
 				IsPublished = post.IsPublished,
 				LastModified = dateTimeNow,
+				PostCategory = postCategories.ToList()
 			};
 
 			if (post.IsPublished)
@@ -95,14 +97,17 @@ namespace SharpBlog.Core.Services.Implementation
 
 			await _dbContext.SaveChangesAsync();
 
-			return entity.EntityToDto();
+			return entity.ToDto();
 		}
 
-		private async Task<Post> Update(Post post)
+		private async Task<PostDto> Update(PostDto post)
 		{
 			var dateTimeNow = DateTime.UtcNow;
-
-			var entity = await _dbContext.Posts.FirstOrDefaultAsync(p => p.Id == post.Id);
+			var postCategories = GetPostCategoryEntities(post);
+			var entity = await _dbContext
+				.Posts
+				.Include(p => p.PostCategory)
+				.FirstOrDefaultAsync(p => p.Id == post.Id);
 
 			if (post.IsPublished && !entity.IsPublished)
 			{
@@ -114,10 +119,30 @@ namespace SharpBlog.Core.Services.Implementation
 			entity.Content = post.Content;
 			entity.IsPublished = post.IsPublished;
 			entity.LastModified = dateTimeNow;
+			entity.PostCategory = postCategories.ToList();
 
 			await _dbContext.SaveChangesAsync();
 
-			return entity.EntityToDto();
+			return entity.ToDto();
 		}
+
+		private IEnumerable<PostCategory> GetPostCategoryEntities(PostDto post)
+		{
+			var allCategories = _dbContext.Categories.ToList();
+			var categories = post.Categories.Select(c => new Category { Name = c.Name });
+
+			var existingCategories = allCategories.Intersect(categories, new CategoryEqualityComparer());
+			var missingCategories = categories.Except(allCategories, new CategoryEqualityComparer());
+
+			var postCategories = existingCategories
+				.Concat(missingCategories)
+				.Select(c => new PostCategory {
+					Category = c
+				});
+
+			return postCategories;
+		}
+
+		private bool IsAdmin() => _contextAccessor.HttpContext?.User?.Identity.IsAuthenticated == true;
 	}
 }

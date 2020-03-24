@@ -1,4 +1,4 @@
-﻿@model SharpBlog.Core.Models.Comment
+﻿@model SharpBlog.Core.Models.CommentDto
 
 <div class="container">
     <div class="row">
@@ -20,13 +20,11 @@
 
                 @if (Context.User.Identity.IsAuthenticated)
                 {
-                    <p>
-                        <form asp-controller="Blog" asp-action="DeleteComment" method="post">
-                            <input value="@Model.Id" name="postId" type="hidden" />
-                            <input value="@Model.Id" name="id" type="hidden" />
-                            <button type="submit">Delete comment</button>
-                        </form>
-                    </p>
+                    <form asp-controller="Blog" asp-action="DeleteComment" method="post">
+                        <input value="@Model.PostId" name="postId" type="hidden" />
+                        <input value="@Model.Id" name="id" type="hidden" />
+                        <button type="submit">Delete comment</button>
+                    </form>
                 }
             </div>
         </div>

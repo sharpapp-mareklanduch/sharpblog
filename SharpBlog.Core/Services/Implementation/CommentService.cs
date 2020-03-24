@@ -16,7 +16,7 @@ namespace SharpBlog.Core.Services.Implementation
 			_dbContext = dbContext;
 		}
 
-		public async Task<Comment> Add(Comment comment)
+		public async Task<CommentDto> Add(CommentDto comment)
 		{
 			var entity = _dbContext.Comments.Add(new Database.Models.Comment
 			{
@@ -29,7 +29,7 @@ namespace SharpBlog.Core.Services.Implementation
 
 			await _dbContext.SaveChangesAsync();
 
-			return entity.EntityToDto();
+			return entity.ToDto();
 		}
 
 		public async Task Delete(int id)

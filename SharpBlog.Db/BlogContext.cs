@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SharpBlog.Database.Mappers;
 using SharpBlog.Database.Models;
+using System.Linq;
 
 namespace SharpBlog.Database
 {
@@ -19,11 +20,11 @@ namespace SharpBlog.Database
         {
             base.OnModelCreating(builder);
 			
-            builder.ApplyConfiguration(new UserBuilder());
-            builder.ApplyConfiguration(new PostBuilder());
-            builder.ApplyConfiguration(new CategoryBuilder());
-            builder.ApplyConfiguration(new CommentBuilder());
-            builder.ApplyConfiguration(new PostCategoryBuilder());
+            builder.ApplyConfiguration(new UserMapper());
+            builder.ApplyConfiguration(new PostMapper());
+            builder.ApplyConfiguration(new CategoryMapper());
+            builder.ApplyConfiguration(new CommentMapper());
+            builder.ApplyConfiguration(new PostCategoryMapper());
         }
 
     }

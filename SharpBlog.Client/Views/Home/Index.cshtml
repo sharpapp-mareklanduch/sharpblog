@@ -1,4 +1,4 @@
-﻿@model List<SharpBlog.Core.Models.Post>
+﻿@model IEnumerable<SharpBlog.Core.Models.PostDto>
 @{
     ViewData["Title"] = "Home Page";
     @await Html.PartialAsync("~/Views/Blog/_PostList.cshtml", Model);

@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SharpBlog.Client.ViewModels;
 using SharpBlog.Core.Models;
 using SharpBlog.Core.Services;
 
@@ -20,16 +17,7 @@ namespace SharpBlog.Client.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			List<Post> posts;
-			if (User.Identity.IsAuthenticated)
-			{
-				posts = await _postService.GetAll();
-			}
-			else
-			{
-				posts = await _postService.GetAllPublished();
-			}
-
+			var posts = await _postService.GetAll();
 			return View(posts);
 		}
 

@@ -22,7 +22,7 @@ namespace SharpBlog.Core.Services.Implementation
 			_hashService = hashService;
 		}
 
-		public async Task RegisterUser(User user)
+		public async Task RegisterUser(UserDto user)
 		{
 			var userEntity = await _blogContext.Users.FirstOrDefaultAsync();
 			if (userEntity != null)
@@ -40,10 +40,10 @@ namespace SharpBlog.Core.Services.Implementation
 			await _blogContext.SaveChangesAsync();
 		}
 
-		public async Task<User> Get(string email)
+		public async Task<UserDto> Get(string email)
 		{
 			var entity = await _blogContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-			return new User
+			return new UserDto
 			{
 				Name = entity.Name,
 				Email = entity.Email

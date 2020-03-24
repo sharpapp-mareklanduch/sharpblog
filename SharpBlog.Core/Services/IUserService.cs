@@ -5,8 +5,8 @@ namespace SharpBlog.Core.Services
 {
 	public interface IUserService
 	{
-		Task RegisterUser(User user);
-		Task<User> Get(string email);
+		Task RegisterUser(UserDto user);
+		Task<UserDto> Get(string email);
 		Task<bool> IsNewUserRequired();
 		Task<bool> ValidateUser(string email, string password);
 	}

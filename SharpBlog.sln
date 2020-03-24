@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpBlog.Database", "SharpBlog.Database\SharpBlog.Database.csproj", "{29C1B961-11DE-4729-860D-2954A846528E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpBlog.Client", "SharpBlog.Client\SharpBlog.Client.csproj", "{559A16EC-90EB-4C39-A003-A2511339CE53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpBlog.Client", "SharpBlog.Client\SharpBlog.Client.csproj", "{559A16EC-90EB-4C39-A003-A2511339CE53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpBlog.Db", "SharpBlog.Db\SharpBlog.Db.csproj", "{3EFCC305-3AFD-4EED-A408-98FE2FC6FFD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpBlog.Core", "SharpBlog.Core\SharpBlog.Core.csproj", "{803476E0-475D-455F-8CF7-069BDD98B104}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpBlog.Core", "SharpBlog.Core\SharpBlog.Core.csproj", "{432F18F6-E3D3-40CE-B961-5FA9E9C5CE3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{29C1B961-11DE-4729-860D-2954A846528E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29C1B961-11DE-4729-860D-2954A846528E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{29C1B961-11DE-4729-860D-2954A846528E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29C1B961-11DE-4729-860D-2954A846528E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{559A16EC-90EB-4C39-A003-A2511339CE53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{559A16EC-90EB-4C39-A003-A2511339CE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{559A16EC-90EB-4C39-A003-A2511339CE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{559A16EC-90EB-4C39-A003-A2511339CE53}.Release|Any CPU.Build.0 = Release|Any CPU
-		{803476E0-475D-455F-8CF7-069BDD98B104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{803476E0-475D-455F-8CF7-069BDD98B104}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{803476E0-475D-455F-8CF7-069BDD98B104}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{803476E0-475D-455F-8CF7-069BDD98B104}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EFCC305-3AFD-4EED-A408-98FE2FC6FFD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EFCC305-3AFD-4EED-A408-98FE2FC6FFD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EFCC305-3AFD-4EED-A408-98FE2FC6FFD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EFCC305-3AFD-4EED-A408-98FE2FC6FFD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{432F18F6-E3D3-40CE-B961-5FA9E9C5CE3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{432F18F6-E3D3-40CE-B961-5FA9E9C5CE3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{432F18F6-E3D3-40CE-B961-5FA9E9C5CE3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{432F18F6-E3D3-40CE-B961-5FA9E9C5CE3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

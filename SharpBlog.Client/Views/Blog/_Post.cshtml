@@ -1,4 +1,4 @@
-﻿@model SharpBlog.Core.Models.Post
+﻿@model SharpBlog.Core.Models.PostDto
 
 <div class="container">
     <div class="row">
@@ -16,7 +16,7 @@
                 </p>
                 <p class="publish-info">
                     Published by @Model.Author on @Model.PublicationDate
-                    <span class="float-right"><a href="/Blog/@Model.Id/">@Model.Comments.Count comments</a></span>
+                    <span class="float-right"><a href="/Blog/@Model.Id/">@Model.Comments.Count() comments</a></span>
                     <br />
                     @foreach (var category in Model.Categories)
                     {

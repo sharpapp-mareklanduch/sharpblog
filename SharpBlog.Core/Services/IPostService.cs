@@ -6,10 +6,9 @@ namespace SharpBlog.Core.Services
 {
     public interface IPostService
     {
-	    Task<Post> AddOrUpdate(Post post);
-	    Task<List<Post>> GetAllPublished();
-	    Task<List<Post>> GetAll();
-	    Task<Post> Get(int id);
+	    Task<PostDto> AddOrUpdate(PostDto post);
+	    Task<List<PostDto>> GetAll();
+	    Task<PostDto> Get(int id);
 	    Task Delete(int id);
     }
 }

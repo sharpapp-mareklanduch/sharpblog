@@ -5,9 +5,9 @@ namespace SharpBlog.Core.Mappers
 {
 	public static class PostEntityToDto
 	{
-		public static Post EntityToDto(this Database.Models.Post entity)
+		public static PostDto ToDto(this Database.Models.Post entity)
 		{
-			return new Post
+			return new PostDto
 			{
 				Id = entity.Id,
 				Author = entity.Author,
@@ -17,7 +17,8 @@ namespace SharpBlog.Core.Mappers
 				PublicationDate = entity.PublicationDate,
 				IsPublished = entity.IsPublished,
 				LastModified = entity.LastModified,
-				Comments = entity.Comments?.Where(c => !c.IsDeleted).Select(c => c?.EntityToDto())?.ToList()
+				Comments = entity.Comments?.Where(c => !c.IsDeleted).Select(c => c?.ToDto()),
+				Categories = entity.PostCategory?.Select(pc => pc?.Category?.ToDto())
 			};
 		}
 	}

@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SharpBlog.Database.Migrations
@@ -13,8 +12,8 @@ namespace SharpBlog.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 128, nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,11 +25,12 @@ namespace SharpBlog.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
                     Content = table.Column<string>(nullable: true),
-                    Author = table.Column<string>(maxLength: 256, nullable: false),
+                    Author = table.Column<string>(nullable: false),
                     IsPublished = table.Column<bool>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
                     PublicationDate = table.Column<DateTime>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: false),
                     InputDate = table.Column<DateTime>(nullable: false)
@@ -45,10 +45,10 @@ namespace SharpBlog.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 128, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    PasswordHash = table.Column<string>(nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,12 +60,13 @@ namespace SharpBlog.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PostId = table.Column<int>(nullable: false),
-                    Author = table.Column<string>(maxLength: 256, nullable: false),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Author = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
                     Content = table.Column<string>(nullable: true),
-                    InputDate = table.Column<DateTime>(nullable: false)
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    InputDate = table.Column<DateTime>(nullable: false),
+                    PostId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,25 +80,25 @@ namespace SharpBlog.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostCategories",
+                name: "PostCategory",
                 columns: table => new
                 {
                     PostId = table.Column<int>(nullable: false),
-                    TagId = table.Column<int>(nullable: false)
+                    CategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostCategories", x => new { x.PostId, x.TagId });
+                    table.PrimaryKey("PK_PostCategory", x => new { x.PostId, x.CategoryId });
                     table.ForeignKey(
-                        name: "FK_PostCategories_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
+                        name: "FK_PostCategory_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PostCategories_Categories_TagId",
-                        column: x => x.TagId,
-                        principalTable: "Categories",
+                        name: "FK_PostCategory_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -108,9 +109,9 @@ namespace SharpBlog.Database.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostCategories_TagId",
-                table: "PostCategories",
-                column: "TagId");
+                name: "IX_PostCategory_CategoryId",
+                table: "PostCategory",
+                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -119,16 +120,16 @@ namespace SharpBlog.Database.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "PostCategories");
+                name: "PostCategory");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Posts");
         }
     }
 }
