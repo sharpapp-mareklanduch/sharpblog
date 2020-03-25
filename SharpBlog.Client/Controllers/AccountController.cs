@@ -116,7 +116,7 @@ namespace SharpBlog.Client.Controllers
 
 		private IActionResult RedirectHome()
 		{
-			return RedirectToAction("Index", "Home");
+			return RedirectToAction("Index", "Blog");
 		}
 	}
 }

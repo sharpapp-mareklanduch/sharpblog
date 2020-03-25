@@ -59,7 +59,7 @@ namespace SharpBlog.Client
 			}
 			else
 			{
-				app.UseExceptionHandler("/Home/Error");
+				app.UseExceptionHandler("/Blog/Error");
 				app.UseHsts();
 			}
 
@@ -86,15 +86,19 @@ namespace SharpBlog.Client
 			{
 				endpoints.MapControllerRoute(
 					name: "default",
-					pattern: "{controller=Home}/{action=Index}");
+					pattern: "{controller=Blog}/{action=Index}");
 				endpoints.MapControllerRoute(
 					name: "post",
-					pattern: "blog/{id}",
-					defaults: new { controller = "Blog", action = "Index" });
+					pattern: "blog/post/{id}",
+					defaults: new { controller = "Blog", action = "Post" });
 				endpoints.MapControllerRoute(
 					name: "postEdit",
 					pattern: "blog/editpost/{id?}",
 					defaults: new { controller = "Blog", action = "EditPost" });
+				endpoints.MapControllerRoute(
+					name: "postEdit",
+					pattern: "blog/category/{name}",
+					defaults: new { controller = "Blog", action = "Category" });
 			});
 		}
 	}

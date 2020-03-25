@@ -1,6 +1,0 @@
-﻿@model IEnumerable<SharpBlog.Core.Models.PostDto>
-
-@foreach (var post in Model)
-{
-    await Html.RenderPartialAsync("~/Views/Blog/_Post.cshtml", post);
-}

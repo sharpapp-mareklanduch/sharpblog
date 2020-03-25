@@ -7,8 +7,9 @@ namespace SharpBlog.Core.Services
     public interface IPostService
     {
 	    Task<PostDto> AddOrUpdate(PostDto post);
-	    Task<List<PostDto>> GetAll();
-	    Task<PostDto> Get(int id);
+		Task<IEnumerable<PostDto>> GetAll();
+		Task<IEnumerable<PostDto>> GetByCategory(string name);
+		Task<PostDto> Get(int id);
 	    Task Delete(int id);
     }
 }

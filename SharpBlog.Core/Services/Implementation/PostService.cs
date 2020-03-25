@@ -35,17 +35,16 @@ namespace SharpBlog.Core.Services.Implementation
 			return await Update(post);
 		}
 
-		public Task<List<PostDto>> GetAll()
+		public Task<IEnumerable<PostDto>> GetAll()
 		{
 			var posts = _dbContext.Posts
                 .Where(p => (p.IsPublished || IsAdmin()) && !p.IsDeleted)
                 .Include(p => p.Comments)
 				.Include(p => p.PostCategory)
 					.ThenInclude(p => p.Category)
-				.OrderByDescending(p => p.InputDate)
-				.ThenByDescending(p => p.PublicationDate)
+				.OrderByDescending(p => IsAdmin() ? p.LastModified : p.PublicationDate)
 				.Select(p => p.ToDto())
-				.ToList();
+				.AsEnumerable();
 
 			return Task.FromResult(posts);
 		}
@@ -60,6 +59,21 @@ namespace SharpBlog.Core.Services.Implementation
 				.FirstOrDefaultAsync(p => p.Id == id);
 
 			return entity?.ToDto();
+		}
+
+		public Task<IEnumerable<PostDto>> GetByCategory(string name)
+		{
+			var posts = _dbContext.Posts
+				.Where(p => (p.IsPublished || IsAdmin()) && !p.IsDeleted)
+                .Include(p => p.Comments)
+				.Include(p => p.PostCategory)
+					.ThenInclude(pc => pc.Category)
+				.Where(p => p.PostCategory.Select(pc => pc.Category.Name.ToLower()).Contains(name.ToLower()))
+				.OrderByDescending(p => IsAdmin() ? p.LastModified : p.PublicationDate)
+				.Select(p => p.ToDto())
+				.AsEnumerable();
+
+			return Task.FromResult(posts);
 		}
 
 		public async Task Delete(int id)
@@ -129,24 +143,26 @@ namespace SharpBlog.Core.Services.Implementation
 
 		private IEnumerable<PostCategory> GetPostCategoryEntities(PostDto post)
 		{
-			if(post?.Categories == null)
-			{
-				return new List<PostCategory>();
-			}
+			const string unpublished = "unpublished";
 
 			var allCategories = _dbContext.Categories.ToList();
-			var categories = post.Categories.Select(c => new Category { Name = c.Name });
+			var postCategories = post.Categories?.Select(c => new Category { Name = c.Name }).ToList() ?? new List<Category>();
 
-			var existingCategories = allCategories.Intersect(categories, new CategoryEqualityComparer());
-			var missingCategories = categories.Except(allCategories, new CategoryEqualityComparer());
+			var existingCategories = allCategories.Intersect(postCategories, new CategoryEqualityComparer());
+			var missingCategories = postCategories.Except(allCategories, new CategoryEqualityComparer());
 
-			var postCategories = existingCategories
-				.Concat(missingCategories)
-				.Select(c => new PostCategory {
-					Category = c
-				});
+			var categories = existingCategories.Concat(missingCategories).ToList();
+			if (!post.IsPublished)
+			{
+				categories.Add(new Category { Name = unpublished });
+			}
+			else
+			{
+				categories.RemoveAll(c => c.Name.Equals(unpublished, StringComparison.OrdinalIgnoreCase));
+			}
 
-			return postCategories;
+			var postCategory = categories.Select(c => new PostCategory { Category = c});
+            return postCategory;
 		}
 
 		private bool IsAdmin() => _contextAccessor.HttpContext?.User?.Identity.IsAuthenticated == true;

@@ -46,6 +46,7 @@
 
         .post .content a {
             font-size: 24px;
+            color: #0070be;
         }
 
     .post h1 a {
@@ -210,4 +211,8 @@ input.dashed {
     width: 100%;
     padding: 3px;
     outline: none;
+}
+a {
+    color: #0070be;
+    text-decoration: underline;
 }

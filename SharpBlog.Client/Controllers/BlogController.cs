@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,13 +22,26 @@ namespace SharpBlog.Client.Controllers
 			_commentService = commentService;
 		}
 
-        public async Task<IActionResult> Index(int id)
+		public async Task<IActionResult> Index()
+		{
+			var posts = await _postService.GetAll();
+			return View(posts);
+		}
+
+		public async Task<IActionResult> Post(int id)
         {
 			var post = await _postService.Get(id);
 			return View(new PostViewModel(post));
         }
 
-        [HttpGet]
+		public async Task<IActionResult> Category(string name)
+		{
+			var posts = await _postService.GetByCategory(name);
+			ViewData["category"] = name;
+			return View(posts);
+		}
+
+		[HttpGet]
         [Authorize]
         public async Task<IActionResult> EditPost(int? id)
         {
@@ -69,7 +83,7 @@ namespace SharpBlog.Client.Controllers
 				Categories = post.Categories?.Split(" ").Select(t => new CategoryDto { Name = t })
 			});
 
-			return RedirectToAction(nameof(Index), new { id = addedPost.Id });
+			return RedirectToAction(nameof(Post), new { id = addedPost.Id });
 		}
 
 		[HttpPost]
@@ -78,7 +92,7 @@ namespace SharpBlog.Client.Controllers
 		public async Task<IActionResult> DeletePost(int id)
 		{
 			await _postService.Delete(id);
-			return RedirectToAction("Index", "Home");
+			return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
@@ -88,7 +102,7 @@ namespace SharpBlog.Client.Controllers
             if (!ModelState.IsValid)
             {
                 var post = await _postService.Get(comment.PostId);
-                return View("Index", new PostViewModel(post, comment));
+                return View(nameof(Post), new PostViewModel(post, comment));
             }
 
             await _commentService.Add(new CommentDto
@@ -99,7 +113,7 @@ namespace SharpBlog.Client.Controllers
                 Content = comment.Content
             });
 
-            return RedirectToAction("Index", new { id = comment.PostId });
+            return RedirectToAction(nameof(Post), new { id = comment.PostId });
         }
 
         [HttpPost]
@@ -108,7 +122,13 @@ namespace SharpBlog.Client.Controllers
         public async Task<IActionResult> DeleteComment(int id, int postId)
         {
             await _commentService.Delete(id);
-            return RedirectToAction("Index", new { id = postId });
+            return RedirectToAction(nameof(Post), new { id = postId });
         }
-    }
+
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult Error()
+		{
+			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+	}
 }
