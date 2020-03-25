@@ -16,6 +16,6 @@ namespace SharpBlog.Database.Models
         public DateTime InputDate { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
-        public virtual ICollection<PostCategory> PostCategories { get; set; }
+        public virtual ICollection<PostCategory> PostCategory { get; set; }
     }
 }

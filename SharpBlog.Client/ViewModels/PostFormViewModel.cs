@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SharpBlog.Client.ViewModels
 {
@@ -14,5 +15,7 @@ namespace SharpBlog.Client.ViewModels
 
 		[Required]
 		public bool IsPublished { get; set; }
+
+		public string Categories { get; set; }
 	}
 }

@@ -5,7 +5,7 @@ namespace SharpBlog.Core.Services
 {
     public interface ICommentService
     {
-        Task<Comment> Add(Comment comment);
+        Task<CommentDto> Add(CommentDto comment);
         Task Delete(int id);
     }
 }

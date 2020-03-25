@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharpBlog.Core.Services;
-using SharpBlog.Client.ViewModels;
 using SharpBlog.Client.ViewModels.Account;
 using SharpBlog.Core.Models;
 
@@ -97,7 +96,7 @@ namespace SharpBlog.Client.Controllers
 
 			if (await _userService.IsNewUserRequired())
 			{
-				var user = new User
+				var user = new UserDto
 				{
 					Email = model.Email,
 					Name = model.Name,
@@ -117,7 +116,7 @@ namespace SharpBlog.Client.Controllers
 
 		private IActionResult RedirectHome()
 		{
-			return RedirectToAction("Index", "Home");
+			return RedirectToAction("Index", "Blog");
 		}
 	}
 }

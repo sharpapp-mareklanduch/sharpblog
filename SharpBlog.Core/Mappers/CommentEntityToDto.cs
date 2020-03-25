@@ -7,9 +7,9 @@ namespace SharpBlog.Core.Mappers
 {
 	public static class CommentEntityToDto
 	{
-		public static Comment EntityToDto(this Database.Models.Comment entity)
+		public static CommentDto ToDto(this Database.Models.Comment entity)
 		{
-			return new Comment
+			return new CommentDto
 			{
 				Id = entity.Id,
 				PostId = entity.PostId,

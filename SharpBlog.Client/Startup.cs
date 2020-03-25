@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,9 +24,9 @@ namespace SharpBlog.Client
 		
 		public void ConfigureServices(IServiceCollection services)
 		{
-
+			services.AddControllersWithViews();
 			services.AddDbContext<BlogContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("WebioConnection")));
+				options.UseSqlServer(Configuration.GetConnectionString("Connection")));
 
 			services.Configure<CookiePolicyOptions>(options =>
 			{
@@ -48,20 +48,18 @@ namespace SharpBlog.Client
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IPostService, PostService>();
 			services.AddScoped<ICommentService, CommentService>();
-
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 		}
-		
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-				app.UseDatabaseErrorPage();
 			}
 			else
 			{
-				app.UseExceptionHandler("/Home/Error");
+				app.UseExceptionHandler("/Blog/Error");
 				app.UseHsts();
 			}
 
@@ -78,23 +76,29 @@ namespace SharpBlog.Client
 			}
 
 			app.UseRewriter(rewriteOptions);
-			app.UseAuthentication();
 			app.UseStaticFiles();
 			app.UseCookiePolicy(new CookiePolicyOptions());
 
-			app.UseMvc(routes =>
+			app.UseAuthentication();
+			app.UseRouting();
+			app.UseAuthorization();
+			app.UseEndpoints(endpoints =>
 			{
-				routes.MapRoute(
+				endpoints.MapControllerRoute(
 					name: "default",
-					template: "{controller=Home}/{action=Index}");
-				routes.MapRoute(
+					pattern: "{controller=Blog}/{action=Index}");
+				endpoints.MapControllerRoute(
 					name: "post",
-					template: "blog/{id}",
-					defaults: new {controller = "Blog", action = "Index"});
-				routes.MapRoute(
+					pattern: "blog/post/{id}",
+					defaults: new { controller = "Blog", action = "Post" });
+				endpoints.MapControllerRoute(
 					name: "postEdit",
-					template: "blog/editpost/{id?}",
-					defaults: new {controller = "Blog", action = "EditPost"});
+					pattern: "blog/editpost/{id?}",
+					defaults: new { controller = "Blog", action = "EditPost" });
+				endpoints.MapControllerRoute(
+					name: "postEdit",
+					pattern: "blog/category/{name}",
+					defaults: new { controller = "Blog", action = "Category" });
 			});
 		}
 	}

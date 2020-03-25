@@ -7,22 +7,13 @@
     background-color: #f2f2f2;
 }
 
-.dimmed-layer {
-    background-color: rgba(0,0,0, 0.2);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
 .main-header {
     margin-bottom: 50px;
     background: no-repeat center center;
     background-color: #f2f2f2;
     position: relative;
     background-size: cover;
-    background-image: url('/img/mainheader.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('/img/mainheader.jpg');
     padding: 150px 0
 }
 
@@ -55,9 +46,11 @@
 
         .post .content a {
             font-size: 24px;
+            color: #0070be;
         }
 
     .post h1 a {
+        font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
         font-weight: lighter;
         color: #000;
         font-size: 40px;
@@ -202,3 +195,24 @@ hr.post-separator {
         color: #fff;
         text-decoration: underline;
     }
+
+h1 input.dashed {
+    font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-weight: lighter;
+    color: #000;
+    font-size: 40px;
+}
+
+input.dashed {
+    border: 1px dashed grey;
+    background: transparent;
+    max-width: 100%;
+    min-width: 100px;
+    width: 100%;
+    padding: 3px;
+    outline: none;
+}
+a {
+    color: #0070be;
+    text-decoration: underline;
+}

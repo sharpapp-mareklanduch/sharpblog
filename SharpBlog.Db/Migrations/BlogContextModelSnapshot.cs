@@ -3,21 +3,19 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharpBlog.Database;
 
 namespace SharpBlog.Database.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    [Migration("20190301115036_InitialMigration")]
-    partial class InitialMigration
+    partial class BlogContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -25,11 +23,12 @@ namespace SharpBlog.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -40,20 +39,27 @@ namespace SharpBlog.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Author")
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(256);
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("InputDate");
+                    b.Property<DateTime>("InputDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("PostId");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -66,23 +72,33 @@ namespace SharpBlog.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Author")
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("InputDate");
+                    b.Property<DateTime>("InputDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPublished");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<DateTime>("LastModified");
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
 
-                    b.Property<DateTime?>("PublicationDate");
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Title");
+                    b.Property<DateTime?>("PublicationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -91,30 +107,37 @@ namespace SharpBlog.Database.Migrations
 
             modelBuilder.Entity("SharpBlog.Database.Models.PostCategory", b =>
                 {
-                    b.Property<int>("PostId");
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("TagId");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
-                    b.HasKey("PostId", "TagId");
+                    b.HasKey("PostId", "CategoryId");
 
-                    b.HasIndex("TagId");
+                    b.HasIndex("CategoryId");
 
-                    b.ToTable("PostCategories");
+                    b.ToTable("PostCategory");
                 });
 
             modelBuilder.Entity("SharpBlog.Database.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
-                        .HasMaxLength(256);
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128);
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordHash");
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -126,20 +149,23 @@ namespace SharpBlog.Database.Migrations
                     b.HasOne("SharpBlog.Database.Models.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SharpBlog.Database.Models.PostCategory", b =>
                 {
-                    b.HasOne("SharpBlog.Database.Models.Post", "Post")
-                        .WithMany("PostCategories")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("SharpBlog.Database.Models.Category", "Category")
-                        .WithMany("PostCategories")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany("PostCategory")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SharpBlog.Database.Models.Post", "Post")
+                        .WithMany("PostCategory")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
