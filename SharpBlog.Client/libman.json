@@ -1,22 +1,32 @@
 {
   "version": "1.0",
   "defaultProvider": "cdnjs",
-  "libraries": [
-    {
-      "provider": "cdnjs",
-      "library": "twitter-bootstrap@4.2.1",
-      "destination": "wwwroot/lib/twitter-bootstrap/",
-      "files": [
-        "js/bootstrap.min.js",
-        "js/bootstrap.js",
-        "css/bootstrap.min.css",
-        "css/bootstrap.css"
-      ]
-    },
-    {
-      "provider": "cdnjs",
-      "library": "tinymce@5.0.1",
-      "destination": "wwwroot/lib/tinymce/"
-    }
-  ]
+    "libraries": [
+        {
+            "provider": "cdnjs",
+            "library": "twitter-bootstrap@4.4.1",
+            "destination": "wwwroot/lib/twitter-bootstrap/",
+            "files": [
+                "js/bootstrap.min.js",
+                "js/bootstrap.js",
+                "css/bootstrap.min.css",
+                "css/bootstrap.css"
+            ]
+        },
+        {
+            "provider": "cdnjs",
+            "library": "tinymce@5.2.1",
+            "destination": "wwwroot/lib/tinymce/"
+        },
+        {
+            "provider": "cdnjs",
+            "library": "wavesurfer.js@3.3.1",
+            "destination": "wwwroot/lib/wavesurferjs/"
+        },
+        {
+            "provider": "cdnjs",
+            "library": "font-awesome@5.13.0",
+            "destination": "wwwroot/lib/font-awesome/"
+        }
+    ]
 }

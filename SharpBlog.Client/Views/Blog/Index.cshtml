@@ -1,19 +1,22 @@
 ﻿@model IEnumerable<SharpBlog.Core.Models.PostDto>
 @{
     ViewData["Title"] = "Home Page";
-    <div class="container">
-        @if (Context.User.Identity.IsAuthenticated)
-        {
+}
+@section scripts {
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+}
+<div class="container">
+    @if (Context.User.Identity.IsAuthenticated)
+    {
         <div class="offset-2 col-8">
             <h4 class="text-center">
                 <a href="/Blog/Category/unpublished">Show unpublished only</a>
             </h4>
         </div>
-        }
-        @foreach (var post in Model)
-        {
-            await Html.RenderPartialAsync("~/Views/Blog/_Post.cshtml", post);
-        }
-    </div>
-}
+    }
+    @foreach (var post in Model)
+    {
+        await Html.RenderPartialAsync("~/Views/Blog/_Post.cshtml", post);
+    }
+</div>
 
