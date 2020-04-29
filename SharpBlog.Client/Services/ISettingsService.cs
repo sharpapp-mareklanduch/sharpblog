@@ -7,5 +7,8 @@
         string GetIconRelativeUrl();
         string GetLogoRelativeUrl();
 
+        bool GetReCaptchaEnabled();
+        string GetReCaptchaPublicKey();
+        string GetReCaptchaPrivateKey();
     }
 }
