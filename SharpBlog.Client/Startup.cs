@@ -13,6 +13,8 @@ using SharpBlog.Database;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
+using SharpBlog.Client.Services;
+using SharpBlog.Client.Services.Implementation;
 
 namespace SharpBlog.Client
 {
@@ -68,6 +70,7 @@ namespace SharpBlog.Client
             services.AddScoped<ICommentService, CommentService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<CustomCookieAuthenticationEvents>();
+            services.AddSingleton<ISettingsService, SettingsService>();
         }
 
         public void Configure(IApplicationBuilder app)

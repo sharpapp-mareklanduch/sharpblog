@@ -17,5 +17,13 @@ namespace SharpBlog.Core.Models
 
         public IEnumerable<CategoryDto> Categories { get; set; }
         public IEnumerable<CommentDto> Comments { get; set; }
+
+        public string RelativeUrl
+        {
+            get
+            {
+                return $"/Blog/Post/{Id}";
+            }
+        }
     }
 }

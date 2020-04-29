@@ -1,16 +1,12 @@
 ﻿@model IEnumerable<SharpBlog.Core.Models.PostDto>
-@{
-    ViewData["Title"] = "Home Page";
-    <div class="container">
-        <div class="row">
-            <div class="offset-2 col-8">
-                <h4 class="text-center">Category: @ViewData["category"]</h4>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="offset-2 col-8">
+            <h4 class="text-center">Category: @ViewData["category"]</h4>
         </div>
-        @foreach (var post in Model)
-        {
-            await Html.RenderPartialAsync("~/Views/Blog/_Post.cshtml", post);
-        }
     </div>
-}
-
+    @foreach (var post in Model)
+    {
+        await Html.RenderPartialAsync("~/Views/Blog/_Post.cshtml", post);
+    }
+</div>

@@ -73,7 +73,7 @@ namespace SharpBlog.Core.Services.Implementation
             if (entity.Email != email) {
                 return false;
             }
-            return await VerifyPasswordHash(password, entity.PasswordHash);
+            return VerifyPasswordHash(password, entity.PasswordHash);
         }
 
         public async Task<bool> ChangePassword(string oldPassword, string newPassword, string confirmNewPassword)
@@ -129,7 +129,7 @@ namespace SharpBlog.Core.Services.Implementation
             await _blogContext.SaveChangesAsync();
         }
 
-        private async Task<bool> VerifyPasswordHash(string password, string passwordHash)
+        private bool VerifyPasswordHash(string password, string passwordHash)
         {
             return _hashService.Generate(password) == passwordHash;
         }
