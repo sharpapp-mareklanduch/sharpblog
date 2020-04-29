@@ -50,7 +50,7 @@ namespace SharpBlog.Client.Controllers
 
             ViewData["category"] = name;
             ViewData["BlogTitle"] = $"{_settingsService.GetBlogName()} - {name}";
-            ViewData["BlogDescription"] = $"Blog posts in the {_settingsService.GetBlogDescription()} category";
+            ViewData["BlogDescription"] = $"Blog posts in the {name} category";
             return View(posts);
         }
 
