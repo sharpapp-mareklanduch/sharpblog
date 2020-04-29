@@ -40,7 +40,7 @@ namespace SharpBlog.Client.Controllers
             var post = await _postService.Get(id);
 
             ViewData["BlogTitle"] = $"{post?.Title}";
-            ViewData["BlogDescription"] = _settingsService.GetBlogDescription(); // TODO: description for post (Excerpt)
+            ViewData["BlogDescription"] = post?.Content?.StripHTML()?.Excerpt(30);
             return View(new PostViewModel(post));
         }
 
@@ -74,7 +74,7 @@ namespace SharpBlog.Client.Controllers
             };
 
             ViewData["BlogTitle"] = $"{post?.Title}";
-            ViewData["BlogDescription"] = _settingsService.GetBlogDescription(); // TODO: description for post (Excerpt)
+            ViewData["BlogDescription"] = post?.Content?.StripHTML()?.Excerpt(30);
             return View(editPost);
         }
 
