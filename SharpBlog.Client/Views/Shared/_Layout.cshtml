@@ -2,32 +2,33 @@
 <html>
 @await Html.PartialAsync("~/Views/Shared/_Head.cshtml")
 <body>
-@await Html.PartialAsync("~/Views/Shared/_Navbar.cshtml")
-<header class="main-header">
+    @await Html.PartialAsync("~/Views/Shared/_Navbar.cshtml")
+    <header class="main-header">
+        <div class="container">
+            <div class="row">
+                <div class="offset-3 col-6 text-center">
+                    <h1>Hi, I am Mark!</h1>
+                    <h3>I'm a C# enthusiast and .NET developer. Sharpapp.net is a website where I would like to share my work.</h3>
+                </div>
+            </div>
+        </div>
+    </header>
     <div class="container">
         <div class="row">
-            <div class="offset-3 col-6 text-center">
-                <h1>Hi, I am Mark!</h1>
-                <h3>I'm a C# enthusiast and .NET developer. Sharpapp.net is a website where I would like to share my work.</h3>
+            <div class="col-12">
+                @RenderBody()
             </div>
         </div>
     </div>
-</header>
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            @RenderBody()
+    <footer class="border-top text-muted footer">
+        <div class="container">
+            <div class="offset-2 col-8 text-center">
+                Created by <a href="https://www.sharpapp.net">sharpapp.net</a> &copy; 2020
+            </div>
         </div>
-    </div>
-</div>
-<footer class="border-top text-muted footer">
-    <div class="container">
-        <div class="offset-2 col-8 text-center">
-            Created by <a href="https://www.sharpapp.net">sharpapp.net</a> &copy; 2019
-        </div>
-    </div>
-</footer>
-<script type="module" src="~/js/site.js" asp-append-version="true"></script>
-@RenderSection("Scripts", required: false)
+    </footer>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script type="module" src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

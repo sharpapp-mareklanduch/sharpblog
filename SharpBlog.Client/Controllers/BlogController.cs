@@ -1,8 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using SharpBlog.Client.Services;
 using SharpBlog.Client.ViewModels;
 using SharpBlog.Core.Models;
@@ -117,6 +121,16 @@ namespace SharpBlog.Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddComment(CommentFormViewModel comment)
         {
+            if (_settingsService.GetReCaptchaEnabled())
+            {
+                var reCaptchaIsValid = await VerifyReCaptchaToken(HttpContext.Request.Form["g-recaptcha-response"],
+                                                                    _settingsService.GetReCaptchaPrivateKey());
+                if (!reCaptchaIsValid)
+                {
+                    ModelState.TryAddModelError("reCaptchaValidationFailed", "You are a robot!");
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 var post = await _postService.Get(comment.PostId);
@@ -147,6 +161,29 @@ namespace SharpBlog.Client.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private async Task<bool> VerifyReCaptchaToken(string token, string privateKey)
+        {
+            var client = new HttpClient();
+            var formData = new FormUrlEncodedContent(
+                                new Dictionary<string, string>
+                                {
+                                    { "response", token },
+                                    { "secret", privateKey }
+                                });
+            var res = await client.PostAsync("https://www.google.com/recaptcha/api/siteverify", formData);
+            if (res.StatusCode != HttpStatusCode.OK)
+            {
+                return false;
+            }
+
+            string JSONres = await res.Content.ReadAsStringAsync();
+            var JSONdata = JObject.Parse(JSONres);
+
+            bool.TryParse(JSONdata.GetValue("success").ToString(), out var success);
+
+            return success;
         }
     }
 }
