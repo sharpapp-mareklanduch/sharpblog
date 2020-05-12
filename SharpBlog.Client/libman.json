@@ -15,7 +15,7 @@
         },
         {
             "provider": "cdnjs",
-            "library": "tinymce@5.2.1",
+            "library": "tinymce@5.2.2",
             "destination": "wwwroot/lib/tinymce/"
         },
         {
