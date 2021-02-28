@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SharpBlog.Core.Services;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -12,16 +11,17 @@ using System;
 using Microsoft.SyndicationFeed.Rss;
 using Microsoft.SyndicationFeed.Atom;
 using Microsoft.SyndicationFeed;
+using SharpBlog.Common.Dal;
 
 namespace SharpBlog.Client.Controllers
 {
     public class FeedController : Controller
     {
-        private readonly IPostService _postService;
+        private readonly IPostDal _postDal;
 
-        public FeedController(IPostService postService)
+        public FeedController(IPostDal postDal)
         {
-            _postService = postService;
+            _postDal = postDal;
         }
 
         [Route("/robots.txt")]
@@ -58,7 +58,7 @@ namespace SharpBlog.Client.Controllers
                                         Async = true, Indent = true, Encoding = new UTF8Encoding(false)
                                     });
 
-            var posts = await _postService.GetAll();
+            var posts = await _postDal.GetAll();
 
             ISyndicationFeedWriter writer;
             if (type?.Equals("rss", StringComparison.OrdinalIgnoreCase) ?? false)
@@ -125,7 +125,7 @@ namespace SharpBlog.Client.Controllers
             xml.WriteStartDocument();
             xml.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
-            var posts = await _postService.GetAll();
+            var posts = await _postDal.GetAll();
 
             xml.WriteStartElement("url");
             xml.WriteElementString("loc", host);

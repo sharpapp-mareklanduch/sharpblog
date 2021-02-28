@@ -10,5 +10,8 @@
         bool GetReCaptchaEnabled();
         string GetReCaptchaPublicKey();
         string GetReCaptchaPrivateKey();
+
+        bool GetResetUser();
+        void SetUserRegistered();
     }
 }

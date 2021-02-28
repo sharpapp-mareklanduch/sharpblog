@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using SharpBlog.Core.Services;
+using SharpBlog.Common.Dal;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,11 +8,11 @@ namespace SharpBlog.Client
 {
     public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
     {
-        private readonly IUserService _userService;
+        private readonly IUserDal _userDal;
 
-        public CustomCookieAuthenticationEvents(IUserService userService)
+        public CustomCookieAuthenticationEvents(IUserDal userDal)
         {
-            _userService = userService;
+            _userDal = userDal;
         }
 
         public override async Task ValidatePrincipal(CookieValidatePrincipalContext context)
@@ -23,7 +23,7 @@ namespace SharpBlog.Client
             var lastPasswordChangeDate = userPrincipal.Claims.FirstOrDefault(c => c.Type == "LastPasswordChangeDate")?.Value;
             if (!string.IsNullOrEmpty(lastPasswordChangeDate))
             {
-                passwordChanged = await _userService.ValidatePasswordChange(lastPasswordChangeDate);
+                passwordChanged = await _userDal.ValidatePasswordChange(lastPasswordChangeDate);
             }
 
             if (passwordChanged)

@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
-using SharpBlog.Core.Models;
+using SharpBlog.Common.Models;
 
-namespace SharpBlog.Core.Services
+namespace SharpBlog.Common.Dal
 {
-    public interface ICommentService
+    public interface ICommentDal
     {
         Task<CommentDto> Add(CommentDto comment);
         Task Delete(int id);

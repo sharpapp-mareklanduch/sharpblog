@@ -7,32 +7,34 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using SharpBlog.Client.Attributes;
 using SharpBlog.Client.Services;
 using SharpBlog.Client.ViewModels;
-using SharpBlog.Core.Models;
-using SharpBlog.Core.Services;
+using SharpBlog.Common.Dal;
+using SharpBlog.Common.Models;
 
 namespace SharpBlog.Client.Controllers
 {
+    [NewUserRedirection]
     public class BlogController : Controller
     {
-        private readonly IPostService _postService;
-        private readonly ICommentService _commentService;
+        private readonly IPostDal _posDal;
+        private readonly ICommentDal _commentDal;
         private readonly ISettingsService _settingsService;
 
         public BlogController(
-            IPostService postService,
-            ICommentService commentService,
+            IPostDal postDal,
+            ICommentDal commentDal,
             ISettingsService settingsService)
         {
-            _postService = postService;
-            _commentService = commentService;
+            _posDal = postDal;
+            _commentDal = commentDal;
             _settingsService = settingsService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var posts = await _postService.GetAll();
+            var posts = await _posDal.GetAll();
 
             ViewData["BlogTitle"] = _settingsService.GetBlogName();
             ViewData["BlogDescription"] = _settingsService.GetBlogDescription();
@@ -41,7 +43,7 @@ namespace SharpBlog.Client.Controllers
 
         public async Task<IActionResult> Post(int id)
         {
-            var post = await _postService.Get(id);
+            var post = await _posDal.Get(id);
 
             ViewData["BlogTitle"] = $"{post?.Title}";
             ViewData["BlogDescription"] = post?.Content?.StripHTML()?.Excerpt(30);
@@ -50,7 +52,7 @@ namespace SharpBlog.Client.Controllers
 
         public async Task<IActionResult> Category(string name)
         {
-            var posts = await _postService.GetByCategory(name);
+            var posts = await _posDal.GetByCategory(name);
 
             ViewData["category"] = name;
             ViewData["BlogTitle"] = $"{_settingsService.GetBlogName()} - {name}";
@@ -67,7 +69,7 @@ namespace SharpBlog.Client.Controllers
                 return View(new PostFormViewModel());
             }
 
-            var post = await _postService.Get((int)id);
+            var post = await _posDal.Get((int)id);
             var editPost = new PostFormViewModel
             {
                 Id = post.Id,
@@ -92,7 +94,7 @@ namespace SharpBlog.Client.Controllers
                 return View(post);
             }
 
-            var addedPost = await _postService.AddOrUpdate(new PostDto
+            var addedPost = await _posDal.AddOrUpdate(new PostDto
             {
                 Id = post.Id,
                 Author = User.Identity.Name,
@@ -113,7 +115,7 @@ namespace SharpBlog.Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(int id)
         {
-            await _postService.Delete(id);
+            await _posDal.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
@@ -133,11 +135,11 @@ namespace SharpBlog.Client.Controllers
 
             if (!ModelState.IsValid)
             {
-                var post = await _postService.Get(comment.PostId);
+                var post = await _posDal.Get(comment.PostId);
                 return View(nameof(Post), new PostViewModel(post, comment));
             }
 
-            await _commentService.Add(new CommentDto
+            await _commentDal.Add(new CommentDto
             {
                 PostId = comment.PostId,
                 Author = comment.Name,
@@ -153,7 +155,7 @@ namespace SharpBlog.Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteComment(int id, int postId)
         {
-            await _commentService.Delete(id);
+            await _commentDal.Delete(id);
             return RedirectToAction(nameof(Post), new { id = postId });
         }
 

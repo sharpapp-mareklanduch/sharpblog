@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpBlog.Client", "SharpBlog.Client\SharpBlog.Client.csproj", "{559A16EC-90EB-4C39-A003-A2511339CE53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpBlog.Db", "SharpBlog.Db\SharpBlog.Db.csproj", "{3EFCC305-3AFD-4EED-A408-98FE2FC6FFD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpBlog.Database", "SharpBlog.Db\SharpBlog.Database.csproj", "{3EFCC305-3AFD-4EED-A408-98FE2FC6FFD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpBlog.Core", "SharpBlog.Core\SharpBlog.Core.csproj", "{432F18F6-E3D3-40CE-B961-5FA9E9C5CE3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpBlog.Common", "SharpBlog.Core\SharpBlog.Common.csproj", "{432F18F6-E3D3-40CE-B961-5FA9E9C5CE3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

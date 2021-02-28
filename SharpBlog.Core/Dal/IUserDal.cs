@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using SharpBlog.Core.Models;
+using SharpBlog.Common.Models;
 
-namespace SharpBlog.Core.Services
+namespace SharpBlog.Common.Dal
 {
-	public interface IUserService
+	public interface IUserDal
 	{
 		Task RegisterUser(UserDto user);
 		Task<UserDto> GetAdmin();
-		Task<bool> IsNewUserRequired();
+		Task<bool> UserExists();
 		Task<bool> ValidateUser(string email, string password);
 		Task<bool> ChangePassword(string oldPassword, string newPassword, string confirmNewPassword);
 		Task<bool> ValidatePasswordChange(string lastPasswordChangeDate);

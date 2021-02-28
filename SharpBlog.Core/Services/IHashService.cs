@@ -1,4 +1,4 @@
-﻿namespace SharpBlog.Core.Services
+﻿namespace SharpBlog.Common.Services
 {
 	public interface IHashService
 	{

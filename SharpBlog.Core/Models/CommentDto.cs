@@ -1,6 +1,6 @@
 using System;
 
-namespace SharpBlog.Core.Models
+namespace SharpBlog.Common.Models
 {
     public class CommentDto
     {

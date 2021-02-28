@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SharpBlog.Core.Services;
 using SharpBlog.Client.ViewModels.Account;
-using SharpBlog.Core.Models;
-using Microsoft.AspNetCore.Identity;
+using SharpBlog.Common.Models;
+using SharpBlog.Client.Attributes;
+using SharpBlog.Client.Services;
+using SharpBlog.Common.Dal;
 
 namespace SharpBlog.Client.Controllers
 {
@@ -17,21 +18,25 @@ namespace SharpBlog.Client.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        private readonly IUserDal _userDal;
         private readonly IUserService _userService;
+        private readonly ISettingsService _settingsService;
 
-        public AccountController(IUserService userService)
+        public AccountController(
+            IUserDal userDal,
+            IUserService userService,
+            ISettingsService settingsService)
         {
+            _userDal = userDal;
             _userService = userService;
+            _settingsService = settingsService;
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string returnUrl = null)
+        [NewUserRedirection]
+        public IActionResult Login()
         {
-            if (await _userService.IsNewUserRequired())
-            {
-                return RedirectToAction(nameof(Register));
-            }
             return View();
         }
 
@@ -40,9 +45,9 @@ namespace SharpBlog.Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid && await _userService.ValidateUser(model.Email, model.Password))
+            if (ModelState.IsValid && await _userDal.ValidateUser(model.Email, model.Password))
             {
-                var user = await _userService.GetAdmin();
+                var user = await _userDal.GetAdmin();
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Name),
@@ -77,14 +82,16 @@ namespace SharpBlog.Client.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
-            if (await _userService.IsNewUserRequired())
-            {
-                return View();
-            }
+            return View();
+        }
 
-            return RedirectToAction(nameof(Login));
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegisterCompleted()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -96,19 +103,9 @@ namespace SharpBlog.Client.Controllers
                 return View(model);
             }
 
-            if (await _userService.IsNewUserRequired())
-            {
-                var user = new UserDto
-                {
-                    Email = model.Email,
-                    Name = model.Name,
-                    Password = model.Password
-                };
+            await _userService.RegisterUser(model);
 
-                await _userService.RegisterUser(user);
-            }
-
-            return RedirectHomePage();
+            return RedirectToAction(nameof(RegisterCompleted));
         }
 
         [HttpGet]
@@ -125,7 +122,7 @@ namespace SharpBlog.Client.Controllers
                 return View(model);
             }
 
-            var isPasswordChanged = await _userService.ChangePassword(model.OldPassword, model.NewPassword, model.ConfirmNewPassword);
+            var isPasswordChanged = await _userDal.ChangePassword(model.OldPassword, model.NewPassword, model.ConfirmNewPassword);
             if (isPasswordChanged)
             {
                 return RedirectLoginPage();
@@ -138,7 +135,7 @@ namespace SharpBlog.Client.Controllers
         [HttpGet]
         public async Task<IActionResult> ManageAccount()
         {
-            var user = await _userService.GetAdmin();
+            var user = await _userDal.GetAdmin();
             var model = new ManageAccountViewModel
             {
                 Name = user.Name,
@@ -155,7 +152,7 @@ namespace SharpBlog.Client.Controllers
                 return View(model);
             }
 
-            await _userService.UpdateUser(model.Name, model.Email);
+            await _userDal.UpdateUser(model.Name, model.Email);
 
             ViewData["accountDetailsSaved"] = "Account details has been saved";
             return View(model);

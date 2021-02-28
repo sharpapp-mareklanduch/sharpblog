@@ -1,4 +1,4 @@
-﻿using SharpBlog.Core.Models;
+﻿using SharpBlog.Common.Models;
 
 namespace SharpBlog.Client.ViewModels
 {
