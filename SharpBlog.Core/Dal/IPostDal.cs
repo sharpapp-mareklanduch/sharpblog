@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SharpBlog.Core.Models;
+using SharpBlog.Common.Models;
 
-namespace SharpBlog.Core.Services
+namespace SharpBlog.Common.Dal
 {
-    public interface IPostService
+    public interface IPostDal
     {
 	    Task<PostDto> AddOrUpdate(PostDto post);
 		Task<IEnumerable<PostDto>> GetAll();

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using SharpBlog.Core.Models;
+using SharpBlog.Common.Models;
 
-namespace SharpBlog.Core.Mappers
+namespace SharpBlog.Common.Mappers
 {
 	public static class CommentEntityToDto
 	{

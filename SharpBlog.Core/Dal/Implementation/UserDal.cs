@@ -1,25 +1,22 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using SharpBlog.Core.Models;
+using SharpBlog.Common.Models;
+using SharpBlog.Common.Services;
 using SharpBlog.Database;
 
-namespace SharpBlog.Core.Services.Implementation
+namespace SharpBlog.Common.Dal.Implementation
 {
-    public class UserService : IUserService
+    public class UserDal : IUserDal
     {
         private readonly BlogContext _blogContext;
-        private readonly IConfiguration _config;
         private readonly IHashService _hashService;
 
-        public UserService(
+        public UserDal(
             BlogContext blogContext,
-            IConfiguration config,
             IHashService hashService)
         {
             _blogContext = blogContext;
-            _config = config;
             _hashService = hashService;
         }
 
@@ -57,10 +54,9 @@ namespace SharpBlog.Core.Services.Implementation
             };
         }
 
-        public async Task<bool> IsNewUserRequired()
+        public async Task<bool> UserExists()
         {
-            bool.TryParse(_config["user:reset"], out var resetUserConfig);
-            return resetUserConfig || !(await _blogContext.Users.AnyAsync());
+            return await _blogContext.Users.AnyAsync();
         }
 
         public async Task<bool> ValidateUser(string email, string password)

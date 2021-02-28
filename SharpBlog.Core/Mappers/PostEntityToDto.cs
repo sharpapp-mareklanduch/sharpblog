@@ -1,7 +1,7 @@
-﻿using SharpBlog.Core.Models;
+﻿using SharpBlog.Common.Models;
 using System.Linq;
 
-namespace SharpBlog.Core.Mappers
+namespace SharpBlog.Common.Mappers
 {
 	public static class PostEntityToDto
 	{

@@ -1,17 +1,17 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SharpBlog.Core.Mappers;
+using SharpBlog.Common.Mappers;
 using SharpBlog.Database;
-using SharpBlog.Core.Models;
+using SharpBlog.Common.Models;
 
-namespace SharpBlog.Core.Services.Implementation
+namespace SharpBlog.Common.Dal.Implementation
 {
-	public class CommentService : ICommentService
+	public class CommentDal : ICommentDal
 	{
 		private readonly BlogContext _dbContext;
 
-		public CommentService(BlogContext dbContext)
+		public CommentDal(BlogContext dbContext)
 		{
 			_dbContext = dbContext;
 		}

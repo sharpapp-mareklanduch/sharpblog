@@ -4,20 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using SharpBlog.Core.Mappers;
-using SharpBlog.Core.Models;
+using SharpBlog.Common.Mappers;
+using SharpBlog.Common.Models;
 using SharpBlog.Database;
 using SharpBlog.Database.Comparers;
 using SharpBlog.Database.Models;
 
-namespace SharpBlog.Core.Services.Implementation
+namespace SharpBlog.Common.Dal.Implementation
 {
-    public class PostService : IPostService
+    public class PostDal : IPostDal
     {
         private readonly BlogContext _dbContext;
         private readonly IHttpContextAccessor _contextAccessor;
 
-        public PostService(
+        public PostDal(
             BlogContext dbContext,
             IHttpContextAccessor contextAccessor)
         { 

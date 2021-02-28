@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SharpBlog.Core.Models
+namespace SharpBlog.Common.Models
 {
     public class PostDto
     {

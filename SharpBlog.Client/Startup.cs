@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SharpBlog.Core.Services;
-using SharpBlog.Core.Services.Implementation;
+using SharpBlog.Common.Services;
+using SharpBlog.Common.Services.Implementation;
 using SharpBlog.Database;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Threading.Tasks;
 using SharpBlog.Client.Services;
 using SharpBlog.Client.Services.Implementation;
+using SharpBlog.Common.Dal;
+using SharpBlog.Common.Dal.Implementation;
 
 namespace SharpBlog.Client
 {
@@ -32,6 +33,7 @@ namespace SharpBlog.Client
         public void ConfigureServices(IServiceCollection services)
         {
             var builder = services.AddControllersWithViews();
+
 #if DEBUG
             if (Env.IsDevelopment())
             {
@@ -65,15 +67,16 @@ namespace SharpBlog.Client
                 });
 
             services.AddScoped<IHashService, HashService>();
+            services.AddScoped<IUserDal, UserDal>();
+            services.AddScoped<IPostDal, PostDal>();
+            services.AddScoped<ICommentDal, CommentDal>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IPostService, PostService>();
-            services.AddScoped<ICommentService, CommentService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<CustomCookieAuthenticationEvents>();
-            services.AddSingleton<ISettingsService, SettingsService>();
+            services.AddTransient<ISettingsService, SettingsService>();
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BlogContext blogContext)
         {
             if (Env.IsDevelopment())
             {
@@ -84,6 +87,8 @@ namespace SharpBlog.Client
                 app.UseExceptionHandler("/Blog/Error");
                 app.UseHsts();
             }
+
+            blogContext.Database.Migrate();
 
             var rewriteOptions = new RewriteOptions();
 
