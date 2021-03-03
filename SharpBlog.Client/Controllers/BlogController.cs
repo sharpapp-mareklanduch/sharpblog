@@ -11,7 +11,7 @@ using SharpBlog.Client.Attributes;
 using SharpBlog.Client.Services;
 using SharpBlog.Client.ViewModels;
 using SharpBlog.Core.Dal;
-using SharpBlog.Core.Models;
+using SharpBlog.Core.Dto;
 
 namespace SharpBlog.Client.Controllers
 {

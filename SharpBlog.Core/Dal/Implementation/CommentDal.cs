@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SharpBlog.Core.Mappers;
 using SharpBlog.Database;
-using SharpBlog.Core.Models;
+using SharpBlog.Core.Dto;
 
 namespace SharpBlog.Core.Dal.Implementation
 {

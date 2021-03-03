@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using SharpBlog.Core.Mappers;
-using SharpBlog.Core.Models;
+using SharpBlog.Core.Dto;
 using SharpBlog.Database;
 using SharpBlog.Database.Comparers;
 using SharpBlog.Database.Models;

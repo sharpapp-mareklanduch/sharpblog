@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SharpBlog.Core.Models
+namespace SharpBlog.Core.Dto
 {
     public class UserDto
     {

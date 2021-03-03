@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SharpBlog.Core.Models;
+﻿using SharpBlog.Core.Dto;
 
 namespace SharpBlog.Core.Mappers
 {

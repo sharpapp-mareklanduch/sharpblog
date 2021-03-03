@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SharpBlog.Core.Models;
+using SharpBlog.Core.Dto;
 using SharpBlog.Core.Services;
 using SharpBlog.Database;
 

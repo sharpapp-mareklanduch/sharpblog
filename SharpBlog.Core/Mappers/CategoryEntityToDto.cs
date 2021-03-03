@@ -1,5 +1,4 @@
-﻿using SharpBlog.Core.Models;
-using System.Linq;
+﻿using SharpBlog.Core.Dto;
 
 namespace SharpBlog.Core.Mappers
 {
