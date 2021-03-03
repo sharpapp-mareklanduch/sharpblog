@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using SharpBlog.Common.Mappers;
-using SharpBlog.Common.Models;
+using SharpBlog.Core.Mappers;
+using SharpBlog.Core.Models;
 using SharpBlog.Database;
 using SharpBlog.Database.Comparers;
 using SharpBlog.Database.Models;
 
-namespace SharpBlog.Common.Dal.Implementation
+namespace SharpBlog.Core.Dal.Implementation
 {
     public class PostDal : IPostDal
     {

@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SharpBlog.Common.Mappers;
+using SharpBlog.Core.Mappers;
 using SharpBlog.Database;
-using SharpBlog.Common.Models;
+using SharpBlog.Core.Models;
 
-namespace SharpBlog.Common.Dal.Implementation
+namespace SharpBlog.Core.Dal.Implementation
 {
 	public class CommentDal : ICommentDal
 	{

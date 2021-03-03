@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SharpBlog.Common.Models;
+using SharpBlog.Core.Models;
 
-namespace SharpBlog.Common.Dal
+namespace SharpBlog.Core.Dal
 {
     public interface IPostDal
     {
