@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SharpBlog.Common.Models;
-using SharpBlog.Common.Services;
+using SharpBlog.Core.Models;
+using SharpBlog.Core.Services;
 using SharpBlog.Database;
 
-namespace SharpBlog.Common.Dal.Implementation
+namespace SharpBlog.Core.Dal.Implementation
 {
     public class UserDal : IUserDal
     {

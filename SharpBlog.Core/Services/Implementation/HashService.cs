@@ -3,7 +3,7 @@ using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Configuration;
 
-namespace SharpBlog.Common.Services.Implementation
+namespace SharpBlog.Core.Services.Implementation
 {
 	public class HashService : IHashService
 	{

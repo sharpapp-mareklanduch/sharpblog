@@ -1,6 +1,6 @@
 ﻿using SharpBlog.Client.ViewModels.Account;
-using SharpBlog.Common.Dal;
-using SharpBlog.Common.Models;
+using SharpBlog.Core.Dal;
+using SharpBlog.Core.Models;
 using System.Threading.Tasks;
 
 namespace SharpBlog.Client.Services.Implementation

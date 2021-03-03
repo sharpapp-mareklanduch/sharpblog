@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharpBlog.Client.ViewModels.Account;
-using SharpBlog.Common.Models;
+using SharpBlog.Core.Models;
 using SharpBlog.Client.Attributes;
 using SharpBlog.Client.Services;
-using SharpBlog.Common.Dal;
+using SharpBlog.Core.Dal;
 
 namespace SharpBlog.Client.Controllers
 {

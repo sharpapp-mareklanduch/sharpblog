@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SharpBlog.Db\SharpBlog.Database.csproj" />
+    <ProjectReference Include="..\SharpBlog.Database\SharpBlog.Database.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-namespace SharpBlog.Common.Models
+namespace SharpBlog.Core.Models
 {
     public class ErrorViewModel
     {

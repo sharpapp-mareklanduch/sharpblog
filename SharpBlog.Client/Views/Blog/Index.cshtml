@@ -1,11 +1,11 @@
-﻿@model IEnumerable<SharpBlog.Common.Models.PostDto>
+﻿@model IEnumerable<SharpBlog.Core.Models.PostDto>
 @section scripts {
     <script src="~/lib/tinymce/tinymce.min.js"></script>
 }
 <div class="container">
     @if (Context.User.Identity.IsAuthenticated)
     {
-        <div class="offset-2 col-8">
+        <div class="offset-1 col-10">
             <h4 class="text-center">
                 <a href="/Blog/Category/unpublished">Show unpublished only</a>
             </h4>

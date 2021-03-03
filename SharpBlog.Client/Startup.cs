@@ -7,15 +7,15 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SharpBlog.Common.Services;
-using SharpBlog.Common.Services.Implementation;
+using SharpBlog.Core.Services;
+using SharpBlog.Core.Services.Implementation;
 using SharpBlog.Database;
 using Microsoft.AspNetCore.Identity;
 using System;
 using SharpBlog.Client.Services;
 using SharpBlog.Client.Services.Implementation;
-using SharpBlog.Common.Dal;
-using SharpBlog.Common.Dal.Implementation;
+using SharpBlog.Core.Dal;
+using SharpBlog.Core.Dal.Implementation;
 
 namespace SharpBlog.Client
 {

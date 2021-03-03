@@ -11,7 +11,7 @@ using System;
 using Microsoft.SyndicationFeed.Rss;
 using Microsoft.SyndicationFeed.Atom;
 using Microsoft.SyndicationFeed;
-using SharpBlog.Common.Dal;
+using SharpBlog.Core.Dal;
 
 namespace SharpBlog.Client.Controllers
 {

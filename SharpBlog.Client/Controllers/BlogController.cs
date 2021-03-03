@@ -10,8 +10,8 @@ using Newtonsoft.Json.Linq;
 using SharpBlog.Client.Attributes;
 using SharpBlog.Client.Services;
 using SharpBlog.Client.ViewModels;
-using SharpBlog.Common.Dal;
-using SharpBlog.Common.Models;
+using SharpBlog.Core.Dal;
+using SharpBlog.Core.Models;
 
 namespace SharpBlog.Client.Controllers
 {

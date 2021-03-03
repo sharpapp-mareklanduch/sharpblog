@@ -1,7 +1,7 @@
-﻿using SharpBlog.Common.Models;
+﻿using SharpBlog.Core.Models;
 using System.Linq;
 
-namespace SharpBlog.Common.Mappers
+namespace SharpBlog.Core.Mappers
 {
 	public static class CategoryEntityToDto
 	{

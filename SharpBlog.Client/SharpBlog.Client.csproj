@@ -31,7 +31,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\SharpBlog.Core\SharpBlog.Common.csproj" />
+    <ProjectReference Include="..\SharpBlog.Core\SharpBlog.Core.csproj" />
   </ItemGroup>
 
 </Project>
